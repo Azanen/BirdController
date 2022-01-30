@@ -34,7 +34,7 @@ public class CameraFollow : MonoBehaviour
     public float LookDirectionSpeed = 2f; //how fast the camera corrects to the players upwards direction (for when flying upside down
 
     [Header("Auto Inputs")]
-    public float TimeBeforeAutoXInput; //how long before the camera will correct to be behind the player
+    public float SecondsBeforeCameraReplaceBehindPlayer; //how long before the camera will correct to be behind the player
     private float AutoXInput;
     public float AutoInputCorrectionSpeed = 2f; //how fast the camera auto corrects on the ground
     public float AutoInputCorrectionSpeedFlying = 2f; //how fast the camera auto corrects when flying
@@ -98,8 +98,8 @@ public class CameraFollow : MonoBehaviour
         //reset auto input timer
         if (h != 0 || v != 0)
         {
-            if(AutoXInput < TimeBeforeAutoXInput)
-                AutoXInput = TimeBeforeAutoXInput;
+            if(AutoXInput < SecondsBeforeCameraReplaceBehindPlayer)
+                AutoXInput = SecondsBeforeCameraReplaceBehindPlayer;
         }
 
         HandleRotation(d, v, h, MouseSpeed);

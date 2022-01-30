@@ -835,10 +835,10 @@ MonoBehaviour:
   camTransform: {fileID: 1423281001}
   MouseSpeed: 2
   turnSmoothing: 0.1
-  minAngle: -89
-  maxAngle: 89
+  minAngle: -45
+  maxAngle: 45
   LookDirectionSpeed: 2
-  TimeBeforeAutoXInput: 0.5
+  SecondsBeforeCameraReplaceBehindPlayer: 0.5
   AutoInputCorrectionSpeed: 2
   AutoInputCorrectionSpeedFlying: 2
   DistanceFromPlayer: 9
