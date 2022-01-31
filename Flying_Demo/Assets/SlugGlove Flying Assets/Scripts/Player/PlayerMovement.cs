@@ -7,13 +7,17 @@ public class PlayerMovement : MonoBehaviour
     public enum WorldState
     {
         Grounded, //on ground
-        InAir, //in the air
+        InAir, //in the air 
+        //PB
+        /*
+         Not sure if InAir State is useful
+         */
         Flying, //trying to fly
         Stunned, //on a wall
         Static,
     }
 
-    [HideInInspector]
+    //[HideInInspector]
     public WorldState States;
     private Transform Cam; //reference to our camera
     private Transform CamY; //reference to our camera axis
@@ -144,6 +148,7 @@ public class PlayerMovement : MonoBehaviour
             if (!Ground)
             {
                 SetInAir();
+                //SetFlying(); Tempo modif
                 return;
             }
 
@@ -172,14 +177,23 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (States == WorldState.InAir)
         {
-            if (ActionAirTimer > 0) //reduce air timer 
-                return;
+            /* Turn OFF by PB
+             * 
+             * if (ActionAirTimer > 0) //reduce air timer 
+                  return;
 
-            if (HasJumped) //cannot switch to flying until jump is done
-                return;
+              if (HasJumped) //cannot switch to flying until jump is done
+                  return;*/
 
             if (InputHand.Fly)  //switch to flying
                 SetFlying();
+
+            // BY PB below
+            /*if (InputHand.Fly)
+            {
+                if(States == WorldState.Flying) { SetInAir(); }
+                if(States == WorldState.InAir) { SetFlying(); }
+            }*/
 
 
             //check for ground
@@ -222,6 +236,20 @@ public class PlayerMovement : MonoBehaviour
                     return;
                 }
             }
+        }
+
+        // BY PB below
+        if (Input.GetButton("SwitchWing"))
+        {
+            //Debug.Log("You pressed B");
+           /*if(States == WorldState.Flying)
+            { 
+                SetInAir();
+            }
+           else if(States == WorldState.InAir) 
+            { 
+                SetFlying(); 
+            }*/
         }
     }
 
@@ -445,6 +473,9 @@ public class PlayerMovement : MonoBehaviour
     //for when we start to fly
     void SetFlying()
     {
+        //PB added
+        OnGround = false;
+
         States = WorldState.Flying;
 
         //set animation 
@@ -458,7 +489,7 @@ public class PlayerMovement : MonoBehaviour
         CamFol.SetFlyingState(1);
 
         //turn on gravity
-        Rigid.useGravity = false;
+        Rigid.useGravity = false; // PB
     }
     //stun our character
     public void Stunned(Vector3 PushDirection)
@@ -478,7 +509,8 @@ public class PlayerMovement : MonoBehaviour
         //turn on gravity
         Rigid.useGravity = true;
     }
-
+    
+    #region Fonctions de controles
     void AnimCtrl()
     {
         //setup the location of any velocity based animations from our hip position 
@@ -799,4 +831,5 @@ public class PlayerMovement : MonoBehaviour
         //return with our character being in air
         SetInAir();
     }
+    #endregion
 }
