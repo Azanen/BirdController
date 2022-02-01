@@ -36,7 +36,7 @@ FlyingVelocityGain /how much velocity we gain for flying downwards
 FlyingVelocityLoss /how much velocity we lose for flying upwards
 FlyingLowerLimit /how much we fly down before a boost
 FlyingUpperLimit /how much we fly up before a boost; 
-GlideTime /how long we glide for when not flying before we start to fall
+GlideTime /how long we glide for when not flying before we start to fall (falling meaning gliding)
 
 JumpAmt /how much we jump upwards 
 JumpGravityBoost /how much our gravity is reduced to when we jump (This is minused

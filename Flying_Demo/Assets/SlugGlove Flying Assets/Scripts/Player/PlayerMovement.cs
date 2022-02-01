@@ -8,10 +8,6 @@ public class PlayerMovement : MonoBehaviour
     {
         Grounded, //on ground
         InAir, //in the air 
-        //PB
-        /*
-         Not sure if InAir State is useful
-         */
         Flying, //trying to fly
         Stunned, //on a wall
         Static,
@@ -83,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
     public float FlyingVelocityLoss = 1f; //how much velocity we lose for flying upwards
     public float FlyingLowerLimit = -6f; //how much we fly down before a boost
     public float FlyingUpperLimit = 4f; //how much we fly up before a boost;
-    public float GlideTime = 10f; //how long we glide for when not flying before we start to fall
+    public float GlideTime = 10f; //how long we glide for when not flying before we start to fall (forward !?)
 
     [Header("Jumps")]
     public float JumpAmt; //how much we jump upwards 
@@ -148,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
             if (!Ground)
             {
                 SetInAir();
-                //SetFlying(); Tempo modif
+                //SetFlying(); //Tempo modif
                 return;
             }
 
@@ -185,8 +181,11 @@ public class PlayerMovement : MonoBehaviour
               if (HasJumped) //cannot switch to flying until jump is done
                   return;*/
 
-            if (InputHand.Fly)  //switch to flying
+            //if (InputHand.Fly)  //switch to flying
+            // SetFlying();
+            if (Input.GetKeyDown("e"))  //switch to flying, this triggers the gliding. We need to find the Input.Jump
                 SetFlying();
+            // behavior varies with time
 
             // BY PB below
             /*if (InputHand.Fly)
@@ -238,18 +237,39 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        // BY PB below
-        if (Input.GetButton("SwitchWing"))
+        // BY PB below (with controller)
+       /* if (Input.GetButton("SwitchWing"))
         {
             //Debug.Log("You pressed B");
-           /*if(States == WorldState.Flying)
+           if(States == WorldState.Flying)
             { 
                 SetInAir();
             }
            else if(States == WorldState.InAir) 
             { 
                 SetFlying(); 
-            }*/
+            }
+        }
+        */
+
+        //this workin ?
+        if (Input.GetMouseButtonDown(1))
+        {
+            if(States == WorldState.InAir) 
+             {
+                Debug.Log("goin to fly");
+                SetFlying(); 
+             }
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            //Debug.Log("You right-click");
+            // Its doing both rn for some reasons
+            if (States == WorldState.Flying)
+            {
+                Debug.Log("goin to fall");
+                SetInAir();
+            }
         }
     }
 
@@ -334,7 +354,9 @@ public class PlayerMovement : MonoBehaviour
                 FlyingAdjustmentLerp -= delta * (FlyingAdjustmentSpeed * 0.5f);
 
             //control our character when falling
-            FallingCtrl(delta, ActSpeed, AirAcceleration, moveDirection);
+            // modified by PB
+            FallingCtrl(delta, ActSpeed, AirAcceleration, moveDirection); 
+            //FlyingCtrl(delta, ActSpeed, _xMov, _zMov);
         }
         else if (States == WorldState.Flying)
         {
@@ -474,7 +496,7 @@ public class PlayerMovement : MonoBehaviour
     void SetFlying()
     {
         //PB added
-        OnGround = false;
+        //OnGround = false;
 
         States = WorldState.Flying;
 
