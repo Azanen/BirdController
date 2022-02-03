@@ -366,7 +366,7 @@ public class PlayerMovement : MonoBehaviour
                 if (FlyingTimer > 0) //reduce flying timer 
                     FlyingTimer -= delta;
             }
-            else if (FlyingTimer < GlideTime)
+            else if (FlyingTimer < GlideTime) // pressing flying ---Here---
             {
                 //flapping animation
                 if(FlyingTimer < GlideTime * 0.8f)
