@@ -100,6 +100,8 @@ public class PlayerMovement : MonoBehaviour
     private float RunTimer; //animation ctrl for running
     private float FlyingTimer; //the time before the animation stops flying
 
+
+    private bool flyTest;
     // Start is called before the first frame update
     void Awake()
     { 
@@ -237,31 +239,18 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        // BY PB below (with controller)
-       /* if (Input.GetButton("SwitchWing"))
-        {
-            //Debug.Log("You pressed B");
-           if(States == WorldState.Flying)
-            { 
-                SetInAir();
-            }
-           else if(States == WorldState.InAir) 
-            { 
-                SetFlying(); 
-            }
-        }
-        */
-
         //this workin ?
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetButton("SwitchWingOn"))
         {
             if(States == WorldState.InAir) 
              {
                 Debug.Log("goin to fly");
-                SetFlying(); 
+                SetFlying();
+                flyTest = true;
+                AnimCtrl();
              }
         }
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetButton("SwitchWingOff"))
         {
             //Debug.Log("You right-click");
             // Its doing both rn for some reasons
@@ -269,7 +258,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 Debug.Log("goin to fall");
                 SetInAir();
-            }
+                flyTest = false;
+                AnimCtrl();
+                            }
         }
     }
 
@@ -344,12 +335,12 @@ public class PlayerMovement : MonoBehaviour
                 ActionAirTimer -= delta;
 
             //falling effect
-            Visuals.FallEffectCheck(delta);
+            //Visuals.FallEffectCheck(delta);
 
             //falling audio
-            Visuals.WindAudioSetting(delta, Rigid.velocity.magnitude);
+            //Visuals.WindAudioSetting(delta, Rigid.velocity.magnitude);
 
-            //slow our flying control if we were not
+            //slow our flying control if we were not (PB not sure what is this)
             if (FlyingAdjustmentLerp > -.1)
                 FlyingAdjustmentLerp -= delta * (FlyingAdjustmentSpeed * 0.5f);
 
@@ -364,7 +355,7 @@ public class PlayerMovement : MonoBehaviour
             if (!InputHand.Fly)
             {
                 if (FlyingTimer > 0) //reduce flying timer 
-                    FlyingTimer -= delta;
+                    FlyingTimer -= delta; 
             }
             else if (FlyingTimer < GlideTime) // pressing flying ---Here---
             {
@@ -376,14 +367,14 @@ public class PlayerMovement : MonoBehaviour
             }
 
             //reduce air timer 
-            if (ActionAirTimer > 0)
-                ActionAirTimer -= delta;
+            //if (ActionAirTimer > 0)
+            //    ActionAirTimer -= delta;
 
             //falling effect
-            Visuals.FallEffectCheck(delta);
+           // Visuals.FallEffectCheck(delta);
 
             //falling audio
-            Visuals.WindAudioSetting(delta, Rigid.velocity.magnitude);
+            //Visuals.WindAudioSetting(delta, Rigid.velocity.magnitude);
 
             //lerp controls
             if (FlyingAdjustmentLerp < 1.1)
@@ -402,7 +393,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 //flying effects 
-                Visuals.FlyingFxTimer(delta);
+              //  Visuals.FlyingFxTimer(delta);
             }
 
             HandleVelocity(delta, Spd, FlyAccel, YAmt);
@@ -482,7 +473,7 @@ public class PlayerMovement : MonoBehaviour
     {
         OnGround = false;
         FloorTimer = GroundedTimerBeforeJump;
-        ActionAirTimer = 0.2f;
+        //ActionAirTimer = 0.2f;
 
         States = WorldState.InAir;
 
@@ -555,11 +546,11 @@ public class PlayerMovement : MonoBehaviour
 
         //set our grounded and flying animations
         Anim.SetBool("OnGround", OnGround);
-        bool Fly = true;
-        if (!InputHand.Fly)
-            Fly = false;
+        //bool Fly = true;
+        //if (!InputHand.Fly)
+          //  Fly = false;
 
-        Anim.SetBool("Flying", Fly);
+        Anim.SetBool("Flying", flyTest);
     }
 
     void FixedAnimCtrl(float D) //animations involving a timer
