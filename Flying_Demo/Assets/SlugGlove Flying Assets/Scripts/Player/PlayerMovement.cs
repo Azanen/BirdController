@@ -46,7 +46,9 @@ public class PlayerMovement : MonoBehaviour
     public float SlowDownAcceleration = 2f; //how quickly we slow down
     public float turnSpeed = 2f; //how quickly we turn on the ground
     private float FlownAdjustmentLerp = 1; //if we have flown this will be reset at 0, and effect turn speed on the ground
-    [HideInInspector]
+    
+    //[HideInInspector]
+    [Header("SPEED")]
     public float ActSpeed; //our actual speed
     private Vector3 movepos, targetDir, DownwardDirection; //where to move to
 
@@ -100,8 +102,10 @@ public class PlayerMovement : MonoBehaviour
     private float RunTimer; //animation ctrl for running
     private float FlyingTimer; //the time before the animation stops flying
 
-
+    //Variables de philippe
+    private bool wingON;
     private bool flyTest;
+    private bool wingSwitchCooldown;
     // Start is called before the first frame update
     void Awake()
     { 
@@ -121,6 +125,10 @@ public class PlayerMovement : MonoBehaviour
 
         //setup this characters stats
         SetupCharacter();
+
+        //Philippe 
+        wingON = false;
+        wingSwitchCooldown = true; 
     }
 
     private void Update()   //inputs and animation
@@ -239,29 +247,9 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        //this workin ?
-        if (Input.GetButton("SwitchWingOn"))
-        {
-            if(States == WorldState.InAir) 
-             {
-                Debug.Log("goin to fly");
-                SetFlying();
-                flyTest = true;
-                AnimCtrl();
-             }
-        }
-        if (Input.GetButton("SwitchWingOff"))
-        {
-            //Debug.Log("You right-click");
-            // Its doing both rn for some reasons
-            if (States == WorldState.Flying)
-            {
-                Debug.Log("goin to fall");
-                SetInAir();
-                flyTest = false;
-                AnimCtrl();
-                            }
-        }
+// Wing switch controls
+        WingSwitch();
+
     }
 
     // Update is called once per frame
@@ -845,4 +833,37 @@ public class PlayerMovement : MonoBehaviour
         SetInAir();
     }
     #endregion
+
+    private IEnumerator Countdown() 
+    {
+        yield return new WaitForSeconds(0.1f);
+        wingSwitchCooldown = true;
+    }
+
+    private void WingSwitch()
+    {
+        if (Input.GetButtonDown("SwitchWingOn") && wingSwitchCooldown)
+        {
+            if (States == WorldState.InAir)
+            {
+                wingSwitchCooldown = false;
+                StartCoroutine(Countdown());
+                SetFlying();
+                flyTest = true;
+                AnimCtrl();
+
+            }
+        }
+        if (Input.GetButtonDown("SwitchWingOn") && wingSwitchCooldown)
+        {
+            if (States == WorldState.Flying)
+            {
+                wingSwitchCooldown = false;
+                StartCoroutine(Countdown());
+                SetInAir();
+                flyTest = false;
+                AnimCtrl();
+            }
+        }
+    }
 }
