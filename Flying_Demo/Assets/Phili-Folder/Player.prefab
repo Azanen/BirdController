@@ -1,5 +1,17 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &6324969071433655600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2659130172244884481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a557ba10c52195409bcb03df2648056, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6324969069323133795
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,14 +221,14 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 1281
-  MaxSpeed: 6
-  SpeedClamp: 60
-  Acceleration: 1
+  MaxSpeed: 10
+  SpeedClamp: 100
+  Acceleration: 100
   MovementAcceleration: 20
-  SlowDownAcceleration: 3
+  SlowDownAcceleration: 1
   turnSpeed: 8
   ActSpeed: 2.608579e-12
-  AirAcceleration: 2
+  AirAcceleration: 10
   turnSpeedInAir: 0.5
   FallingDirectionSpeed: 0.05
   FlyingDirectionSpeed: 15
@@ -224,10 +236,10 @@ MonoBehaviour:
   FlyingUpDownSpeed: 10
   FlyingLeftRightSpeed: 8
   FlyingRollSpeed: 6
-  FlyingAcceleration: 4
+  FlyingAcceleration: 100
   FlyingDecelleration: 0.1
-  FlyingSpeed: 20
-  FlyingMinSpeed: 6
+  FlyingSpeed: 30
+  FlyingMinSpeed: 15
   FlyingAdjustmentSpeed: 2
   FlyingGravityAmt: 4
   GlideGravityAmt: 6
@@ -257,7 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bottomOffset: 0.5
   frontOffset: 0.5
-  collisionRadius: 0.3
+  collisionRadius: 0.8
   GroundLayer:
     serializedVersion: 2
     m_Bits: 1281
@@ -518,7 +530,7 @@ GameObject:
   m_Layer: 9
   m_Name: FloorCheck
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -855,18 +867,6 @@ Transform:
   m_Father: {fileID: 6324969069472972779}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6324969071433655600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2659130172244884481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a557ba10c52195409bcb03df2648056, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6324969071433655560
 PrefabInstance:
   m_ObjectHideFlags: 0
