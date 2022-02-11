@@ -78,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
     public float FlyingGravBuildSpeed = 3f; //how much our gravity is lerped when stopping flying
 
     public float FlyingVelocityGain = 2f; //how much velocity we gain for flying downwards
+    //THIS HERE GOOD
     public float FlyingVelocityLoss = 1f; //how much velocity we lose for flying upwards
     public float FlyingLowerLimit = -6f; //how much we fly down before a boost
     public float FlyingUpperLimit = 4f; //how much we fly up before a boost;
@@ -193,18 +194,10 @@ public class PlayerMovement : MonoBehaviour
 
             //if (InputHand.Fly)  //switch to flying
             // SetFlying();
-            if (Input.GetKeyDown("e"))  //switch to flying, this triggers the gliding. We need to find the Input.Jump
-                SetFlying();
             // behavior varies with time
 
-            // BY PB below
-            /*if (InputHand.Fly)
-            {
-                if(States == WorldState.Flying) { SetInAir(); }
-                if(States == WorldState.InAir) { SetFlying(); }
-            }*/
 
-
+            //this.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0); //technicaly workin
             //check for ground
             bool Ground = Colli.CheckGround();
 
@@ -334,32 +327,34 @@ public class PlayerMovement : MonoBehaviour
 
             //control our character when falling
             // modified by PB
-            FallingCtrl(delta, ActSpeed, AirAcceleration, moveDirection); 
-            //FlyingCtrl(delta, ActSpeed, _xMov, _zMov);
+            //FallingCtrl(delta, ActSpeed, AirAcceleration, moveDirection); 
+            FlyingCtrl(delta, ActSpeed, _xMov, _zMov);
         }
         else if (States == WorldState.Flying)
         {
             //setup gliding
-            if (!InputHand.Fly)
+            /*if (!InputHand.Fly)
             {
                 if (FlyingTimer > 0) //reduce flying timer 
                     FlyingTimer -= delta; 
             }
-            else if (FlyingTimer < GlideTime) // pressing flying ---Here---
+            
+             else if (FlyingTimer < GlideTime) // pressing flying ---Here---
             {
                 //flapping animation
-                if(FlyingTimer < GlideTime * 0.8f)
+                //if(FlyingTimer < GlideTime * 0.8f)
                     Anim.SetTrigger("Flap");
 
                 FlyingTimer = GlideTime;
             }
+            */
 
             //reduce air timer 
             //if (ActionAirTimer > 0)
             //    ActionAirTimer -= delta;
 
             //falling effect
-           // Visuals.FallEffectCheck(delta);
+            // Visuals.FallEffectCheck(delta);
 
             //falling audio
             //Visuals.WindAudioSetting(delta, Rigid.velocity.magnitude);
@@ -378,11 +373,11 @@ public class PlayerMovement : MonoBehaviour
                 if(ActSpeed > FlyingMinSpeed)
                     FlyAccel = FlyingDecelleration * FlyingAdjustmentLerp;
             }
-            else
-            {
+            //else
+            //{
                 //flying effects 
               //  Visuals.FlyingFxTimer(delta);
-            }
+            //}
 
             HandleVelocity(delta, Spd, FlyAccel, YAmt);
 
@@ -470,6 +465,7 @@ public class PlayerMovement : MonoBehaviour
 
         //turn off gravity
         Rigid.useGravity = true;
+
     }
     //for when we start to fly
     void SetFlying()
@@ -667,6 +663,7 @@ public class PlayerMovement : MonoBehaviour
         Rigid.velocity = dir;
     }
 
+    // THis might not be usefull at all right now.
     void FallingCtrl(float d, float Speed, float Accel, Vector3 moveDirection)
     {
         if (moveDirection == Vector3.zero)
@@ -733,9 +730,9 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 targetVelocity = transform.forward * Speed;
         //push down more when not pressing fly
-        if(InputHand.Fly)
-            ActGravAmt = Mathf.Lerp(ActGravAmt, FlyingGravityAmt, FlyingGravBuildSpeed * 4f * d);
-        else
+        //if(InputHand.Fly)
+        //    ActGravAmt = Mathf.Lerp(ActGravAmt, FlyingGravityAmt, FlyingGravBuildSpeed * 4f * d);
+        //else
             ActGravAmt = Mathf.Lerp(ActGravAmt, GlideGravityAmt, FlyingGravBuildSpeed * 0.5f * d);
  
         targetVelocity -= Vector3.up * ActGravAmt;
@@ -759,14 +756,14 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //LB and RB input = roll (this effects our downward direction
-        if (InputHand.LB) //left roll
+       /* if (InputHand.LB) //left roll
         {
             VD = Vector3.Lerp(VD, -transform.right, d * FlyingRollSpeed);
         }
         else if (InputHand.RB) //right roll
         {
             VD = Vector3.Lerp(VD, transform.right, d * FlyingRollSpeed);
-        }
+        }*/
 
         return VD;
     }
@@ -786,14 +783,14 @@ public class PlayerMovement : MonoBehaviour
             RollDir = Vector3.Lerp(RollDir, transform.right, d * (FlyingLeftRightSpeed * (XMove * -1)));
         }
         //bumper input
-        if (InputHand.LB)
+        /*if (InputHand.LB)
         {
             RollDir = Vector3.Lerp(RollDir, -transform.right, d * FlyingLeftRightSpeed * 0.2f);
         }
         else if (InputHand.RB)
         {
             RollDir = Vector3.Lerp(RollDir, transform.right, d * FlyingLeftRightSpeed * 0.2f);
-        }
+        }*/
 
         return RollDir;
     }

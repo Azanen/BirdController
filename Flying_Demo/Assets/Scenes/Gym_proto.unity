@@ -1015,45 +1015,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
-      propertyPath: MaxSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
-      propertyPath: SpeedClamp
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
       propertyPath: FlyingSpeed
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
-      propertyPath: Acceleration
-      value: 100
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
       propertyPath: FlyingMinSpeed
-      value: 15
+      value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
-      propertyPath: AirAcceleration
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
-      propertyPath: FlyingAcceleration
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
-      propertyPath: SlowDownAcceleration
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6324969069472972783, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
-      propertyPath: collisionRadius
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6324969070030988202, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
 --- !u!1001 &7169461347189090220

@@ -14,8 +14,8 @@ public class InputHandle : MonoBehaviour
 
     public bool Accelerate;
 
-    public bool LB;
-    public bool RB;
+    //public bool LB;
+    //public bool RB;
 
     public bool Fly;
 
@@ -31,11 +31,11 @@ public class InputHandle : MonoBehaviour
         Vertical = Input.GetAxis("Vertical");
 
         Jump = Input.GetButtonDown("Jump");
-        JumpHold = Input.GetButton("Jump");
-        Fly = JumpHold; 
+        //JumpHold = Input.GetButton("Jump");
+        //Fly = JumpHold; 
 
-        RB = Input.GetButton("RightTilt");
-        LB = Input.GetButton("LeftTilt");
+        //RB = Input.GetButton("RightTilt");
+        //LB = Input.GetButton("LeftTilt");
 
     }
 }
