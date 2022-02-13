@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1015,12 +1015,56 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
+      propertyPath: MaxSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
+      propertyPath: SpeedClamp
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
       propertyPath: FlyingSpeed
       value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
       propertyPath: FlyingMinSpeed
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
+      propertyPath: FlyingLowerLimit
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
+      propertyPath: FlyingAcceleration
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
+      propertyPath: FlyingVelocityGain
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
+      propertyPath: FlyingLeftRightSpeed
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
+      propertyPath: SlowDownAcceleration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
+      propertyPath: FlyingUpBeforeSlowDown
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
+      propertyPath: FlyingAccelerationDownward
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6324969069472972782, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
+      propertyPath: FlyingDownAngleBeforeAcceleration
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6324969071253432582, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}
+      propertyPath: m_Constraints
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02e41fb27fa40d942b4f0a52486c470b, type: 3}

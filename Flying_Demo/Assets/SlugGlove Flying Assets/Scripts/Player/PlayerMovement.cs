@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -38,13 +37,13 @@ public class PlayerMovement : MonoBehaviour
     private float ActionAirTimer; //the air timer counting our current actions performed in air
 
     [Header("Stats")]
-    public float MaxSpeed = 15f; //max speed for basic movement
-    public float SpeedClamp = 50f; //max possible speed
+    public float MaxWalkSpeed = 15f; //max speed for basic movement
+    public float MaxFlyingAndWalkingSpeed = 50f; //max possible speed
     private float ActAccel; //our actual acceleration
-    public float Acceleration = 4f; //how quickly we build speed
+    public float WalkAcceleration = 4f; //how quickly we build speed
     public float MovementAcceleration = 20f;    //how quickly we adjust to new speeds
-    public float SlowDownAcceleration = 2f; //how quickly we slow down
-    public float turnSpeed = 2f; //how quickly we turn on the ground
+    public float WalkSlowDownAcceleration = 2f; //how quickly we slow down
+    public float WalkTurnSpeed = 2f; //how quickly we turn on the ground
     private float FlownAdjustmentLerp = 1; //if we have flown this will be reset at 0, and effect turn speed on the ground
     
     //[HideInInspector]
@@ -62,11 +61,11 @@ public class PlayerMovement : MonoBehaviour
     public float FlyingRotationSpeed = 6f; //how fast we turn in air overall
     public float FlyingUpDownSpeed = 0.1f; //how fast we rotate up and down
     public float FlyingLeftRightSpeed = 0.1f;  //how fast we rotate left and right
-    public float FlyingRollSpeed = 0.1f; //how fast we roll
+    //public float FlyingRollSpeed = 0.1f; //how fast we roll
 
     public float FlyingAcceleration = 4f; //how much we accelerate to max speed
     public float FlyingDecelleration = 1f; //how quickly we slow down when flying
-    public float FlyingSpeed; //our max flying speed
+    public float MaxFlyingSpeed; //our max flying speed
     public float FlyingMinSpeed; //our flying slow down speed
 
     public float FlyingAdjustmentSpeed; //how quickly our velocity adjusts to the flying speed
@@ -77,11 +76,11 @@ public class PlayerMovement : MonoBehaviour
     public float GlideGravityAmt = 4f; //how much gravity affects us when just gliding
     public float FlyingGravBuildSpeed = 3f; //how much our gravity is lerped when stopping flying
 
-    public float FlyingVelocityGain = 2f; //how much velocity we gain for flying downwards
+    public float FlyingAccelerationDownward = 2f; //how much velocity we gain for flying downwards
     //THIS HERE GOOD
-    public float FlyingVelocityLoss = 1f; //how much velocity we lose for flying upwards
-    public float FlyingLowerLimit = -6f; //how much we fly down before a boost
-    public float FlyingUpperLimit = 4f; //how much we fly up before a boost;
+    public float FlyingDeccelerationUpward = 1f; //how much velocity we lose for flying upwards
+    public float FlyingDownAngleBeforeAcceleration = -6f; //how much we fly down before a boost
+    public float FlyingUpBeforeSlowDown = 4f; //how much we fly up before a boost;
     public float GlideTime = 10f; //how long we glide for when not flying before we start to fall (forward !?)
 
     [Header("Jumps")]
@@ -289,8 +288,8 @@ public class PlayerMovement : MonoBehaviour
             if (Visuals.WindLerpAmt > 0)
                 Visuals.WindAudioSetting(delta * 3f, 0f);
 
-            float LSpeed = MaxSpeed;
-            float Accel = Acceleration;
+            float LSpeed = MaxWalkSpeed;
+            float Accel = WalkAcceleration;
             float MoveAccel = MovementAcceleration;
 
             //reduce floor timer
@@ -301,7 +300,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 //we are not moving, lerp to a walk speed
                 LSpeed = 0f;
-                Accel = SlowDownAcceleration;
+                Accel = WalkSlowDownAcceleration;
             }
            //lerp our current speed
             if (ActSpeed > LSpeed - 0.5f || ActSpeed < LSpeed + 0.5f)
@@ -359,6 +358,24 @@ public class PlayerMovement : MonoBehaviour
             //falling audio
             //Visuals.WindAudioSetting(delta, Rigid.velocity.magnitude);
 
+            //Philippe was here and it took me 2h -_-
+            if (InputHand.Horizontal == 0 && transform.rotation.z !=0)
+            {
+                //Debug.Log("Stabilizing");
+                Quaternion TiltReset = new Quaternion( transform.rotation.x, transform.rotation.y, 0, transform.rotation.w);
+
+                Vector3 eulerRotation = transform.rotation.eulerAngles;
+                //transform.rotation = Quaternion.Euler(eulerRotation.x, eulerRotation.y, 0);
+                //transform.rotation = TiltReset;
+                //we are not turning, lerp to remove tilt
+                //Quaternion.RotateTowards(transform.rotation, TiltReset, 0);
+                //transform.rotation = Quaternion.Lerp(transform.rotation, TiltReset, Time.deltaTime * 1);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(eulerRotation.x, eulerRotation.y, 0), Time.deltaTime * 1);
+                //transform.localRotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0), Time.deltaTime * 1);
+                //transform.Rotate(Vector3.forward, 1*Time.deltaTime);
+            }
+
+
             //lerp controls
             if (FlyingAdjustmentLerp < 1.1)
                 FlyingAdjustmentLerp += delta * FlyingAdjustmentSpeed;
@@ -366,7 +383,7 @@ public class PlayerMovement : MonoBehaviour
             //lerp speed
             float YAmt = Rigid.velocity.y;
             float FlyAccel = FlyingAcceleration * FlyingAdjustmentLerp;
-            float Spd = FlyingSpeed;
+            float Spd = MaxFlyingSpeed;
             if (!InputHand.Fly)  //we are not holding fly, slow down
             {
                 Spd = FlyingMinSpeed; 
@@ -416,7 +433,7 @@ public class PlayerMovement : MonoBehaviour
             
             //lerp mesh slower when not on ground
             RotateSelf(DownwardDirection, delta, 8f);
-            RotateMesh(delta, transform.forward, turnSpeed);
+            RotateMesh(delta, transform.forward, WalkTurnSpeed);
 
             //push backwards while we fall
             Vector3 FallDir = -transform.forward * 4f;
@@ -568,7 +585,7 @@ public class PlayerMovement : MonoBehaviour
     void LerpSpeed(float d, float TargetSpeed, float Accel)
     {
         //if our speed is larger than our max speed, reduce it slowly 
-        if (ActSpeed > MaxSpeed)
+        if (ActSpeed > MaxWalkSpeed)
         {
             ActSpeed = Mathf.Lerp(ActSpeed, TargetSpeed, d * Accel * 0.5f);
         }
@@ -586,26 +603,26 @@ public class PlayerMovement : MonoBehaviour
 
         }
         //clamp our speed
-        ActSpeed = Mathf.Clamp(ActSpeed, 0, SpeedClamp);
+        ActSpeed = Mathf.Clamp(ActSpeed, 0, MaxFlyingAndWalkingSpeed);
     }
 
     //handle how our speed is increased or decreased when flying
     void HandleVelocity(float d, float TargetSpeed, float Accel, float YAmt)
     {
-        if (ActSpeed > FlyingSpeed) //we are over out max speed, slow down slower
+        if (ActSpeed > MaxFlyingSpeed) //we are over out max speed, slow down slower
             Accel = Accel * 0.8f;
 
-        if (YAmt < FlyingLowerLimit) //we are flying down! boost speed
+        if (YAmt < FlyingDownAngleBeforeAcceleration) //we are flying down! boost speed
         {
-            TargetSpeed = TargetSpeed + (FlyingVelocityGain * (YAmt * -0.5f));
+            TargetSpeed = TargetSpeed + (FlyingAccelerationDownward * (YAmt * -0.5f));
         }
-        else if (YAmt > FlyingUpperLimit) //we are flying up! reduce speed
+        else if (YAmt > FlyingUpBeforeSlowDown) //we are flying up! reduce speed
         {
-            TargetSpeed = TargetSpeed - (FlyingVelocityLoss * YAmt);
-            ActSpeed -= (FlyingVelocityLoss * YAmt) * d;
+            TargetSpeed = TargetSpeed - (FlyingDeccelerationUpward * YAmt);
+            ActSpeed -= (FlyingDeccelerationUpward * YAmt) * d;
         }
         //clamp speed
-        TargetSpeed = Mathf.Clamp(TargetSpeed, -SpeedClamp, SpeedClamp);
+        TargetSpeed = Mathf.Clamp(TargetSpeed, -MaxFlyingAndWalkingSpeed, MaxFlyingAndWalkingSpeed);
         //lerp speed
         ActSpeed = Mathf.Lerp(ActSpeed, TargetSpeed, Accel * d);
     }
@@ -636,7 +653,7 @@ public class PlayerMovement : MonoBehaviour
         if (FlownAdjustmentLerp < 1)
             FlownAdjustmentLerp += delta * 2f;
         //set our turn speed
-        float TurnSpd = (turnSpeed + (ActSpeed * 0.1f)) * FlownAdjustmentLerp;
+        float TurnSpd = (WalkTurnSpeed + (ActSpeed * 0.1f)) * FlownAdjustmentLerp;
         TurnSpd = Mathf.Clamp(TurnSpd, 0, 6);
 
         //lerp mesh slower when not on ground
