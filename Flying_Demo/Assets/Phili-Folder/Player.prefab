@@ -200,6 +200,8 @@ MonoBehaviour:
   Jump: 0
   JumpHold: 0
   Accelerate: 0
+  LB: 0
+  RB: 0
   Fly: 0
 --- !u!114 &6324969069472972782
 MonoBehaviour:
@@ -219,12 +221,12 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 1281
-  MaxWalkSpeed: 7
-  MaxFlyingAndWalkingSpeed: 50
-  WalkAcceleration: 4
+  MaxSpeed: 10
+  SpeedClamp: 100
+  Acceleration: 100
   MovementAcceleration: 20
-  WalkSlowDownAcceleration: 2
-  WalkTurnSpeed: 2
+  SlowDownAcceleration: 1
+  turnSpeed: 8
   ActSpeed: 2.608579e-12
   AirAcceleration: 10
   turnSpeedInAir: 0.5
@@ -233,18 +235,19 @@ MonoBehaviour:
   FlyingRotationSpeed: 5
   FlyingUpDownSpeed: 10
   FlyingLeftRightSpeed: 8
-  FlyingAcceleration: 5
+  FlyingRollSpeed: 6
+  FlyingAcceleration: 100
   FlyingDecelleration: 0.1
-  MaxFlyingSpeed: 0
-  FlyingMinSpeed: 5
+  FlyingSpeed: 30
+  FlyingMinSpeed: 15
   FlyingAdjustmentSpeed: 2
   FlyingGravityAmt: 4
   GlideGravityAmt: 6
   FlyingGravBuildSpeed: 0.2
-  FlyingAccelerationDownward: 10
-  FlyingDeccelerationUpward: 1
-  FlyingDownAngleBeforeAcceleration: -2
-  FlyingUpBeforeSlowDown: 2
+  FlyingVelocityGain: 1
+  FlyingVelocityLoss: 0.5
+  FlyingLowerLimit: -6
+  FlyingUpperLimit: 7
   GlideTime: 2
   JumpAmt: 50
   GroundedTimerBeforeJump: 0.2
@@ -252,10 +255,6 @@ MonoBehaviour:
   SpeedLimitBeforeCrash: 18
   StunPushBack: 50
   StunnedTime: 0.25
-  frontDashSpeed: 30
-  upwardDashSpeed: 50
-  secondStaminaCooldown: 2
-  coolSlider: {fileID: 0}
 --- !u!114 &6324969069472972783
 MonoBehaviour:
   m_ObjectHideFlags: 0
