@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -106,6 +107,17 @@ public class PlayerMovement : MonoBehaviour
     private bool wingON;
     private bool flyTest;
     private bool wingSwitchCooldown;
+
+    [Header("Dash Metriques")]
+    public int frontDashSpeed = 30;
+    public int upwardDashSpeed = 50;
+    public int secondStaminaCooldown = 2;
+    private bool canDash=true;
+    [HideInInspector]
+    public Slider coolSlider;
+    private float elapsedTime = 0;
+    private float progress = 0;
+
     // Start is called before the first frame update
     void Awake()
     { 
@@ -205,6 +217,8 @@ public class PlayerMovement : MonoBehaviour
                 SetGrounded();
                 return;
             }
+
+            UpwardDash();
         }
         else if(States == WorldState.Flying)
         {
@@ -237,6 +251,8 @@ public class PlayerMovement : MonoBehaviour
                     return;
                 }
             }
+
+            FrontalDash();
         }
 
 // Wing switch controls
@@ -442,6 +458,17 @@ public class PlayerMovement : MonoBehaviour
 
             //falling audio
             Visuals.WindAudioSetting(delta, Rigid.velocity.magnitude);
+        }
+
+
+        //Update
+        if (canDash)
+        {
+            coolSlider.value = 1;
+        }
+        else
+        {
+            coolSlider.value = progress;
         }
     }
     //for when we return to the ground
@@ -865,6 +892,7 @@ public class PlayerMovement : MonoBehaviour
                 SetFlying();
                 flyTest = true;
                 AnimCtrl();
+                wingON = false;
 
             }
         }
@@ -877,7 +905,49 @@ public class PlayerMovement : MonoBehaviour
                 SetInAir();
                 flyTest = false;
                 AnimCtrl();
+                wingON = true;
             }
         }
+    }
+
+    private void FrontalDash()
+    {
+
+        if (Input.GetButtonDown("Dashing") && canDash) 
+        {
+            Debug.Log("Dashing forward");
+            SpeedBoost(frontDashSpeed);
+            canDash = false;
+            elapsedTime = 0;
+            progress = 0;
+            StartCoroutine(DashCountdown());
+        }
+    }
+
+    private void UpwardDash()
+    {
+
+        if (Input.GetButtonDown("Dashing") && canDash)
+        {
+            Debug.Log("Dashing upward");
+            Rigid.velocity = new Vector3(Rigid.velocity.x, 0, Rigid.velocity.z);
+            Rigid.AddForce((Vector3.up * upwardDashSpeed), ForceMode.Impulse);
+            canDash = false;
+            elapsedTime = 0;
+            progress = 0;
+            StartCoroutine(DashCountdown());
+        }
+    }
+
+
+    private IEnumerator DashCountdown()
+    {
+        while(progress <= 1) 
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+            progress = elapsedTime / secondStaminaCooldown;
+            yield return null;
+        }
+        canDash = true;
     }
 }
