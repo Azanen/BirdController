@@ -113,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
     public int upwardDashSpeed = 50;
     public int secondStaminaCooldown = 2;
     private bool canDash=true;
-    [HideInInspector]
+
     public Slider coolSlider;
     private float elapsedTime = 0;
     private float progress = 0;
