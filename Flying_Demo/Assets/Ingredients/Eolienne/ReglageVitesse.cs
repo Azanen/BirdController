@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class ReglageVitesse : MonoBehaviour
 {
-    //float dans l'inspecteur multiplie la vitesse standard de l'animator sans modifier l'anim ou le controller
-    public float speedMultiplier;
-    public Animator animEolienne;
-
-    private void Start()
+    // Start is called before the first frame update
+    void Start()
     {
-        animEolienne = this.gameObject.GetComponent<Animator>();
+        
     }
 
-    private void Update()
+    // Update is called once per frame
+    void Update()
     {
-        animEolienne.speed = speedMultiplier;
+        
     }
 }
