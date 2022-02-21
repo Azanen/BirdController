@@ -38,14 +38,14 @@ public class PlayerMovement : MonoBehaviour
     private float ActionAirTimer; //the air timer counting our current actions performed in air
 
     [Header("Stats")]
-    public float MaxWalkSpeed = 15f; //max speed for basic movement
-    public float MaxFlyingAndWalkingSpeed = 50f; //max possible speed
+    public float MaxWalkSpeed; //max speed for basic movement
+    public float MaxFlyingAndWalkingSpeed; //max possible speed
     private float ActAccel; //our actual acceleration
-    public float WalkAcceleration = 4f; //how quickly we build speed
-    public float MovementAcceleration = 20f;    //how quickly we adjust to new speeds
-    public float WalkSlowDownAcceleration = 2f; //how quickly we slow down
-    public float WalkTurnSpeed = 2f; //how quickly we turn on the ground
-    private float FlownAdjustmentLerp = 1; //if we have flown this will be reset at 0, and effect turn speed on the ground
+    public float WalkAcceleration; //how quickly we build speed
+    public float MovementAcceleration;    //how quickly we adjust to new speeds
+    public float WalkSlowDownAcceleration; //how quickly we slow down
+    public float WalkTurnSpeed; //how quickly we turn on the ground
+    private float FlownAdjustmentLerp; //if we have flown this will be reset at 0, and effect turn speed on the ground
     
     //[HideInInspector]
     [Header("SPEED")]
@@ -53,42 +53,37 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 movepos, targetDir, DownwardDirection; //where to move to
 
     [Header("Falling")]
-    public float AirAcceleration = 5f;  //how quickly we adjust to new speeds when in air
-    public float turnSpeedInAir = 2f;
-    public float FallingDirectionSpeed = 0.5f; //how quickly we will return to a normal direction
+    public float AirAcceleration;  //how quickly we adjust to new speeds when in air
+    public float turnSpeedInAir;
+    public float FallingDirectionSpeed; //how quickly we will return to a normal direction
 
     [Header("Flying")]
-    public float FlyingDirectionSpeed = 2f; //how much influence our direction relative to the camera will influence our flying
-    public float FlyingRotationSpeed = 6f; //how fast we turn in air overall
-    public float FlyingUpDownSpeed = 0.1f; //how fast we rotate up and down
-    public float FlyingLeftRightSpeed = 0.1f;  //how fast we rotate left and right
-    //public float FlyingRollSpeed = 0.1f; //how fast we roll
-
-    public float FlyingAcceleration = 4f; //how much we accelerate to max speed
-    public float FlyingDecelleration = 1f; //how quickly we slow down when flying
+    public float FlyingDirectionSpeed; //how much influence our direction relative to the camera will influence our flying
+    public float FlyingRotationSpeed; //how fast we turn in air overall
+    public float FlyingUpDownSpeed; //how fast we rotate up and down
+    public float FlyingLeftRightSpeed;  //how fast we rotate left and right
+    public float FlyingAcceleration; //how much we accelerate to max speed
+    public float FlyingDecelleration; //how quickly we slow down when flying
     public float MaxFlyingSpeed; //our max flying speed
     public float FlyingMinSpeed; //our flying slow down speed
-
     public float FlyingAdjustmentSpeed; //how quickly our velocity adjusts to the flying speed
-    private float FlyingAdjustmentLerp = 0; //the lerp for our adjustment amount
+    private float FlyingAdjustmentLerp; //the lerp for our adjustment amount
 
     [Header("Flying Physics")]
-    public float FlyingGravityAmt = 2f; //how much gravity will pull us down when flying
-    public float GlideGravityAmt = 4f; //how much gravity affects us when just gliding
-    public float FlyingGravBuildSpeed = 3f; //how much our gravity is lerped when stopping flying
-
-    public float FlyingAccelerationDownward = 2f; //how much velocity we gain for flying downwards
-    //THIS HERE GOOD
-    public float FlyingDeccelerationUpward = 1f; //how much velocity we lose for flying upwards
-    public float FlyingDownAngleBeforeAcceleration = -6f; //how much we fly down before a boost
-    public float FlyingUpBeforeSlowDown = 4f; //how much we fly up before a boost;
-    public float GlideTime = 10f; //how long we glide for when not flying before we start to fall (forward !?)
+    public float FlyingGravityAmt; //how much gravity will pull us down when flying
+    public float GlideGravityAmt; //how much gravity affects us when just gliding
+    public float FlyingGravBuildSpeed; //how much our gravity is lerped when stopping flying
+    public float FlyingAccelerationDownward; //how much velocity we gain for flying downwards
+    public float FlyingDeccelerationUpward; //how much velocity we lose for flying upwards
+    public float FlyingDownAngleBeforeAcceleration; //how much we fly down before a boost
+    public float FlyingUpBeforeSlowDown; //how much we fly up before a boost;
+    public float GlideTime; //how long we glide for when not flying before we start to fall (forward !?)
 
     [Header("Jumps")]
     public float JumpAmt; //how much we jump upwards 
     private bool HasJumped; //if we have pressed jump
-    public float GroundedTimerBeforeJump = 0.2f; //how long we have to be on the floor before an action can be made
-    public float JumpForwardAmount = 5f; //how much our regular jumps move us forward
+    public float GroundedTimerBeforeJump; //how long we have to be on the floor before an action can be made
+    public float JumpForwardAmount; //how much our regular jumps move us forward
 
     [Header("Wall Impact")]
     public float SpeedLimitBeforeCrash; //how fast we have to be going to crash
@@ -113,7 +108,6 @@ public class PlayerMovement : MonoBehaviour
     public int upwardDashSpeed = 50;
     public int secondStaminaCooldown = 2;
     private bool canDash=true;
-    [HideInInspector]
     public Slider coolSlider;
     private float elapsedTime = 0;
     private float progress = 0;
@@ -137,6 +131,7 @@ public class PlayerMovement : MonoBehaviour
 
         //setup this characters stats
         SetupCharacter();
+        SetupValue();
 
         //Philippe 
         wingON = false;
@@ -195,20 +190,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (States == WorldState.InAir)
         {
-            /* Turn OFF by PB
-             * 
-             * if (ActionAirTimer > 0) //reduce air timer 
-                  return;
 
-              if (HasJumped) //cannot switch to flying until jump is done
-                  return;*/
-
-            //if (InputHand.Fly)  //switch to flying
-            // SetFlying();
-            // behavior varies with time
-
-
-            //this.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0); //technicaly workin
             //check for ground
             bool Ground = Colli.CheckGround();
 
@@ -950,4 +932,39 @@ public class PlayerMovement : MonoBehaviour
         }
         canDash = true;
     }
+
+    private void SetupValue()
+    {
+        MaxWalkSpeed = 7f;
+        MaxFlyingAndWalkingSpeed = 50f;
+        WalkAcceleration = 3f;
+        MovementAcceleration = 20f;
+        WalkSlowDownAcceleration = 4f;
+        WalkTurnSpeed = 5f;
+        FlownAdjustmentLerp = 1;
+        FlyingDirectionSpeed = 2f; 
+        FlyingRotationSpeed = 6f; 
+        FlyingUpDownSpeed = 8f; 
+        FlyingLeftRightSpeed = 8f;
+        AirAcceleration = 5f;
+        turnSpeedInAir = 2f;
+        FallingDirectionSpeed = 0.5f;
+        FlyingAcceleration = 3f; 
+        FlyingDecelleration = 0.1f; // was 1f, on the board also 1
+        MaxFlyingSpeed = 30f; //Not sure if this works
+        FlyingMinSpeed = 5; 
+        FlyingAdjustmentSpeed = 100;
+        FlyingAdjustmentLerp = 0;
+        FlyingGravityAmt = 2f; 
+        GlideGravityAmt = 4f; 
+        FlyingGravBuildSpeed = 3f; 
+        FlyingAccelerationDownward = 10f; 
+        FlyingDeccelerationUpward = 1f; 
+        FlyingDownAngleBeforeAcceleration = 0f;  // was -2
+        FlyingUpBeforeSlowDown = 1f; 
+        GlideTime = 10f;
+        JumpAmt = 30; 
+        GroundedTimerBeforeJump = 0.2f;
+        JumpForwardAmount = 0f;
+}
 }
