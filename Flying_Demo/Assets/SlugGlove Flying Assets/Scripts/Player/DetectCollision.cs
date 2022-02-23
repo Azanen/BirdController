@@ -11,6 +11,12 @@ public class DetectCollision : MonoBehaviour
     public float collisionRadius;
     public LayerMask GroundLayer;
     public float WallDistance;
+    private PlayerMovement playMove;
+
+    public void Start()
+    {
+        playMove = GetComponent<PlayerMovement>();
+    }
 
     //check if there is a floor to stand on, or land on
     public bool CheckGround()
@@ -32,7 +38,7 @@ public class DetectCollision : MonoBehaviour
         Vector3 Pos2 = transform.position + (transform.forward * frontOffset);
         Collider[] hitColliders = Physics.OverlapSphere(Pos2, collisionRadius, GroundLayer);
 
-        if (hitColliders.Length > 0)
+        if (hitColliders.Length > 0 && !playMove.isDashing)
         {
             return true;
         }

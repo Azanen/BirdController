@@ -27,7 +27,7 @@ public class CameraFollow : MonoBehaviour
 
     private Vector3 LookAtPos;
     [Header("Mouse Speeds")]
-    public float MouseSpeed = 2; //how quickly the camera rotates 
+    public float MouseSpeed = 3; //how quickly the camera rotates 
     public float turnSmoothing = 0.1f; //smoothing applied to this
     public float minAngle = -35; //the min amount the camera can tilt downwards
     public float maxAngle = 35; //the max amount the camera can tilt upwards
@@ -96,8 +96,9 @@ public class CameraFollow : MonoBehaviour
         float v = Input.GetAxis("Mouse Y");
 
         //reset auto input timer
-        if (h != 0 || v != 0)
+        if (h != 0 || v != 0) 
         {
+
             if(AutoXInput < SecondsBeforeCameraReplaceBehindPlayer)
                 AutoXInput = SecondsBeforeCameraReplaceBehindPlayer;
         }
@@ -122,7 +123,7 @@ public class CameraFollow : MonoBehaviour
         Vector3 LerpDir = Vector3.Lerp(transform.up, target.up, d * FolSpd);
         transform.rotation = Quaternion.FromToRotation(transform.up, LerpDir) * transform.rotation;
 
-        if (AutoXInput < 0)
+        if (AutoXInput < 0 && States != WorldState.Grounded)//ajout du check of flight
         {
             float CorSpd = AutoInputCorrectionSpeed;
 

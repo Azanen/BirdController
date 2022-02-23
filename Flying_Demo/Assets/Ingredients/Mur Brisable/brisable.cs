@@ -7,6 +7,8 @@ public class brisable : MonoBehaviour
     public bool isDashing;
     public GameObject particule;
     public AudioSource bedingbedang;
+    public PlayerCollisionSphere playMov;
+    public GameObject tempo;
 
     private void Start()
     {
@@ -16,9 +18,11 @@ public class brisable : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        tempo = other.gameObject;
+        playMov = other.gameObject.GetComponent<PlayerCollisionSphere>();
+        if (other.gameObject.tag == "Player" && other != null)
         {
-            isDashing = other.GetComponent<isDashing>().dashing;
+            isDashing =playMov.PlayerMov.isDashing;
 
             if (isDashing == true)
             {
@@ -27,6 +31,7 @@ public class brisable : MonoBehaviour
         }
     }
 
+    //Not sure we need to put this in a enumerator, talk to Oli
     IEnumerator Brise()
     {
         bedingbedang.Play();

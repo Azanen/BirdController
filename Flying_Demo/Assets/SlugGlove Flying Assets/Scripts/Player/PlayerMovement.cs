@@ -104,13 +104,18 @@ public class PlayerMovement : MonoBehaviour
     private bool wingSwitchCooldown;
 
     [Header("Dash Metriques")]
-    public int frontDashSpeed = 30;
+    public int frontDashSpeed = 50;
     public int upwardDashSpeed = 50;
     public int secondStaminaCooldown = 2;
-    private bool canDash=true;
+    private bool canDashFront=true;
+    private bool canDashUp=true;
     public Slider coolSlider;
     private float elapsedTime = 0;
     private float progress = 0;
+    public float dashTime = 1f;
+    private float tempoSpeed;
+    private float tempoFixedSpeed;
+    public bool isDashing = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -211,10 +216,10 @@ public class PlayerMovement : MonoBehaviour
             bool WallHit = Colli.CheckWall();
 
             //if we have hit a wall
-            if (WallHit)
+            if (WallHit && !isDashing)
             {
                 //if we are going fast enough to crash into a wall
-                if(ActSpeed > SpeedLimitBeforeCrash)
+                if(ActSpeed > SpeedLimitBeforeCrash && !isDashing)
                 {
                     //stun character
                     Stunned(-transform.forward);
@@ -227,7 +232,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 bool Ground = Colli.CheckGround();
 
-                if (Ground)
+                if (Ground && !isDashing)
                 {
                     SetGrounded();
                     return;
@@ -235,6 +240,8 @@ public class PlayerMovement : MonoBehaviour
             }
 
             FrontalDash();
+            //Fixed speed while in 1 sec dash
+
         }
 
 // Wing switch controls
@@ -357,7 +364,7 @@ public class PlayerMovement : MonoBehaviour
             //Visuals.WindAudioSetting(delta, Rigid.velocity.magnitude);
 
             //Philippe was here and it took me 2h -_-
-            if (InputHand.Horizontal == 0 && transform.rotation.z !=0)
+            if (InputHand.Horizontal == 0 && transform.rotation.z !=0 )
             {
                 //Debug.Log("Stabilizing");
                 Quaternion TiltReset = new Quaternion( transform.rotation.x, transform.rotation.y, 0, transform.rotation.w);
@@ -444,7 +451,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         //Update
-        if (canDash)
+        if (canDashFront && canDashUp)
         {
             coolSlider.value = 1;
         }
@@ -456,6 +463,9 @@ public class PlayerMovement : MonoBehaviour
     //for when we return to the ground
     public void SetGrounded()
     {
+        CamFol.MouseSpeed = 3;
+        CamFol.minAngle = -10;
+        CamFol.maxAngle = 75;
         Visuals.Landing();
 
         //reset wind animation
@@ -480,6 +490,10 @@ public class PlayerMovement : MonoBehaviour
     //for when we are set in the air (for falling
     void SetInAir()
     {
+        CamFol.MouseSpeed = 3;
+        CamFol.minAngle =-25;
+        CamFol.maxAngle =45;
+
         OnGround = false;
         FloorTimer = GroundedTimerBeforeJump;
         //ActionAirTimer = 0.2f;
@@ -496,6 +510,9 @@ public class PlayerMovement : MonoBehaviour
     //for when we start to fly
     void SetFlying()
     {
+        CamFol.MouseSpeed = 4;
+        CamFol.minAngle = -25;
+        CamFol.maxAngle = 45;
         //PB added
         //OnGround = false;
 
@@ -894,27 +911,30 @@ public class PlayerMovement : MonoBehaviour
 
     private void FrontalDash()
     {
-
-        if (Input.GetButtonDown("Dashing") && canDash) 
+        //dash would need to have fixed speed ?
+        if (Input.GetButtonDown("Dashing") && canDashFront) 
         {
             Debug.Log("Dashing forward");
+            tempoSpeed = ActSpeed;
             SpeedBoost(frontDashSpeed);
-            canDash = false;
+            tempoFixedSpeed = ActSpeed;
+            canDashFront = false;
             elapsedTime = 0;
             progress = 0;
             StartCoroutine(DashCountdown());
+            StartCoroutine(DashResetSpeed());
         }
     }
 
     private void UpwardDash()
     {
 
-        if (Input.GetButtonDown("Dashing") && canDash)
+        if (Input.GetButtonDown("Dashing") && canDashUp)
         {
             Debug.Log("Dashing upward");
             Rigid.velocity = new Vector3(Rigid.velocity.x, 0, Rigid.velocity.z);
             Rigid.AddForce((Vector3.up * upwardDashSpeed), ForceMode.Impulse);
-            canDash = false;
+            canDashUp = false;
             elapsedTime = 0;
             progress = 0;
             StartCoroutine(DashCountdown());
@@ -928,15 +948,41 @@ public class PlayerMovement : MonoBehaviour
         {
             elapsedTime += Time.unscaledDeltaTime;
             progress = elapsedTime / secondStaminaCooldown;
+            float progressDash = elapsedTime / dashTime;
+            if (!canDashFront && progressDash<=1)
+            {
+                //speed relative to previous speed
+                //ActSpeed = tempoFixedSpeed;
+                isDashing = true;
+                //Fixed speed
+                ActSpeed = 60;
+            }
+            else if (!canDashFront && progressDash>1)
+            {
+                isDashing = false;
+            }
             yield return null;
         }
-        canDash = true;
+        canDashFront = true;
+        canDashUp = true;
+        isDashing = false;
+    }
+    private IEnumerator DashResetSpeed()
+    {
+        
+        yield return new WaitForSeconds(dashTime);//1sec
+            //The player just dash frontward 
+
+            // this dash dgives speed when goind up, returning to 20 does not feel good.
+            //ActSpeed = 20;
+
+            ActSpeed = tempoSpeed;
     }
 
     private void SetupValue()
     {
         MaxWalkSpeed = 7f;
-        MaxFlyingAndWalkingSpeed = 50f;
+        MaxFlyingAndWalkingSpeed = 30f;
         WalkAcceleration = 3f;
         MovementAcceleration = 20f;
         WalkSlowDownAcceleration = 4f;
