@@ -83,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
     public float JumpAmt; //how much we jump upwards 
     private bool HasJumped; //if we have pressed jump
     public float GroundedTimerBeforeJump; //how long we have to be on the floor before an action can be made
-    public float JumpForwardAmount; //how much our regular jumps move us forward
+    //public float JumpForwardAmount; //how much our regular jumps move us forward
 
     [Header("Wall Impact")]
     public float SpeedLimitBeforeCrash; //how fast we have to be going to crash
@@ -184,10 +184,9 @@ public class PlayerMovement : MonoBehaviour
                     Visuals.Jump();
 
                     float AddAmt = Mathf.Clamp((ActSpeed * 0.5f), -10, 16);
-                    float ForwardAmt = Mathf.Clamp(ActSpeed * 4f, JumpForwardAmount, 100);
 
-                    StopCoroutine(JumpUp(ForwardAmt, JumpAmt + AddAmt));
-                    StartCoroutine(JumpUp(ForwardAmt, JumpAmt + AddAmt));
+                    StopCoroutine(JumpUp(JumpAmt + AddAmt));
+                    StartCoroutine(JumpUp(JumpAmt + AddAmt));
 
                     return;
                 }
@@ -588,7 +587,7 @@ public class PlayerMovement : MonoBehaviour
         Anim.SetFloat("XInput", XAnimFloat);
     } 
 
-    IEnumerator JumpUp(float ForwardAmt, float UpwardsAmt)
+    IEnumerator JumpUp(float UpwardsAmt)
     {
         HasJumped = true;
         //kill velocity
@@ -598,9 +597,7 @@ public class PlayerMovement : MonoBehaviour
         //add force upwards
         if (UpwardsAmt != 0)
             Rigid.AddForce((Vector3.up * UpwardsAmt), ForceMode.Impulse);
-        //add force forwards
-        if (ForwardAmt != 0)
-            Rigid.AddForce((transform.forward * ForwardAmt), ForceMode.Impulse);
+
         //remove any built up acceleration
         ActAccel = 0;
         //stop jump state
@@ -658,6 +655,7 @@ public class PlayerMovement : MonoBehaviour
         ActSpeed += Amt;
     }
 
+    // On ground move
     void MoveSelf(float d, float Speed, float Accel, Vector3 moveDirection)
     {
         if (moveDirection == Vector3.zero)
@@ -1011,6 +1009,5 @@ public class PlayerMovement : MonoBehaviour
         GlideTime = 10f;
         JumpAmt = 30; 
         GroundedTimerBeforeJump = 0.2f;
-        JumpForwardAmount = 0f;
 }
 }
