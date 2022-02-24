@@ -117,6 +117,7 @@ public class PlayerMovement : MonoBehaviour
     private float tempoFixedSpeed;
     public bool isDashing = false;
 
+
     // Start is called before the first frame update
     void Awake()
     { 
