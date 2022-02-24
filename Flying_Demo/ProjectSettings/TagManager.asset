@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Breakable
   - Wind
+  - FallDetector
   layers:
   - Default
   - TransparentFX
