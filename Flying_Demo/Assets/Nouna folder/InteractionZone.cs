@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class InteractionZone : MonoBehaviour
 {
-    public Transform detectionPoint;
     const float detectionRadius = 0.2f;
     public LayerMask checkPointZone;
+    public Transform CPDetectionPoint; // CP = checkpoint
+    public Transform spawnPoint;
+    public GameObject crystalToSpawn;
+
+    
 
     private void Update()
     {
@@ -14,7 +18,8 @@ public class InteractionZone : MonoBehaviour
         {
             if (InteractInput())
             {
-                Debug.Log("Interact!");
+                Debug.Log("A crystal appears");
+                Instantiate(crystalToSpawn, spawnPoint.position, spawnPoint.rotation);
             }
         }
     }
@@ -26,7 +31,7 @@ public class InteractionZone : MonoBehaviour
 
     bool DetectCheckPointZone()
     {
-        Vector3 Pos = detectionPoint.position;
+        Vector3 Pos = CPDetectionPoint.position;
         Collider[] hitColliders = Physics.OverlapSphere(Pos, detectionRadius, checkPointZone);
         if (hitColliders.Length > 0)
         {
