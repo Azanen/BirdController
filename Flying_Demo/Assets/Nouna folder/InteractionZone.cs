@@ -10,8 +10,6 @@ public class InteractionZone : MonoBehaviour
     public Transform spawnPoint;
     public GameObject crystalToSpawn;
 
-    
-
     private void Update()
     {
         if (DetectCheckPointZone())

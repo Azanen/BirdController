@@ -32,12 +32,13 @@ public class Spawner : MonoBehaviour
     //    Instantiate(crystalToSpawn, spawnPoint.position, spawnPoint.rotation);
     //}
 
-    public Transform spawnPoint;
-    public GameObject crystalToSpawn;
+    //public Transform spawnPoint;
+    //public GameObject crystalToSpawn;
+    //public LayerMask checkPointZone;
 
-    void OnTriggerEnter()
-    {
-        Instantiate(crystalToSpawn, spawnPoint.position, spawnPoint.rotation);
-    }
+    //void OnTriggerEnter()
+    //{
+    //    Instantiate(crystalToSpawn, spawnPoint.position, spawnPoint.rotation);
+    //}
 
 }
