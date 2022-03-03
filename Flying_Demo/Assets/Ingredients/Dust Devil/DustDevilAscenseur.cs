@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class DustDevilAscenseur : MonoBehaviour
 {
-    private Rigidbody quiMonte;
+    //private Rigidbody quiMonte;
     public float hauteur;
 
-    
+    private PlayerCollisionSphere quiMonte;
+    private Rigidbody quiMonteRigid;
 
     //donne une velocite verticale
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            quiMonte = other.GetComponent<Rigidbody>();
-            quiMonte.velocity = Vector3.up * 8f;
+            quiMonte = other.GetComponent<PlayerCollisionSphere>();
+            quiMonteRigid = quiMonte.GetComponent<Rigidbody>();
+            quiMonteRigid.velocity = Vector3.up * 8f;
         }
     }
 
@@ -24,9 +26,8 @@ public class DustDevilAscenseur : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            quiMonte.useGravity = false;
-            quiMonte.AddForce(transform.up * 2f);
-
+            quiMonteRigid.useGravity = false;
+            quiMonteRigid.AddForce(transform.up * 2f);
         }
     }
 
@@ -34,7 +35,7 @@ public class DustDevilAscenseur : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            quiMonte.useGravity = true;
+            quiMonteRigid.useGravity = true;
         }
     }
 }
