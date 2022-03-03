@@ -481,7 +481,7 @@ public class PlayerMovement : MonoBehaviour
     //for when we return to the ground
     public void SetGrounded()
     {
-        CamFol.MouseSpeed = 3;
+        CamFol.MouseSpeed = 7;
         CamFol.minAngle = -10;
         CamFol.maxAngle = 75;
         Visuals.Landing();
