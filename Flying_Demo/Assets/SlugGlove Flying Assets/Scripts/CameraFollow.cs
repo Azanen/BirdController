@@ -127,7 +127,7 @@ public class CameraFollow : MonoBehaviour
         {
             float CorSpd = AutoInputCorrectionSpeed;
 
-            if (States == WorldState.Flying)
+            if (States != WorldState.Grounded)
                 CorSpd = AutoInputCorrectionSpeedFlying;
             else if (States == WorldState.Dead)
                 CorSpd = FollowRotSpeed * 0.2f;
@@ -200,4 +200,5 @@ public class CameraFollow : MonoBehaviour
             States = WorldState.Dead;
         }
     }
+
 }

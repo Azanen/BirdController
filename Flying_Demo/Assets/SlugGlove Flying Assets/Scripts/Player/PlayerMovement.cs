@@ -118,7 +118,10 @@ public class PlayerMovement : MonoBehaviour
     public float veloY;
     public bool isFalling;
     private bool coroutRunning;
-
+    public bool purificationAbility;
+    private bool isTainted;
+    public GameObject RedLineOverStamina;
+    public float TaintedTimer;
 
 
     // Start is called before the first frame update
@@ -216,7 +219,7 @@ public class PlayerMovement : MonoBehaviour
             if (isFalling) 
             {
                 Vector3 eulerRotation = transform.rotation.eulerAngles;
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(160, eulerRotation.y, eulerRotation.z), Time.deltaTime*2);
+                //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(160, eulerRotation.y, eulerRotation.z), Time.deltaTime*2);
             }
 
             UpwardDash();
@@ -347,7 +350,7 @@ public class PlayerMovement : MonoBehaviour
 
             //control our character when falling
             // modified by PB, need feedback
-            FallingCtrl2(delta, ActSpeed, AirAcceleration, moveDirection); 
+            FallingCtrl(delta, ActSpeed, AirAcceleration, moveDirection); 
             //FlyingCtrl(delta, ActSpeed, _xMov, _zMov);
         }
         else if (States == WorldState.Flying)
@@ -465,7 +468,14 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            coolSlider.value = progress;
+            if (!isTainted)
+            {
+                coolSlider.value = progress;
+            }
+            else
+            {
+                coolSlider.value = 0;
+            }
         }
     }
     //for when we return to the ground
@@ -1013,8 +1023,33 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         isFalling = true;
         coroutRunning = false;
-    }     
+    }
 
+    public void Tainted()
+    {
+        //Debug.Log("Got polluted !");
+        isTainted = true;
+        RedLineOverStamina.SetActive(true);
+        canDashFront = false;
+        canDashUp = false;
+        StartCoroutine(NotTainted());
+    }
+
+    private IEnumerator NotTainted()
+    {
+        yield return new WaitForSeconds(TaintedTimer);
+        isTainted = false;
+        RedLineOverStamina.SetActive(false);
+        canDashFront = true;
+        canDashUp = true;
+    }
+    public void Purify()
+    {
+        //Debug.Log("Purified the pollution !");
+        canDashFront = true;
+        canDashUp = true;
+
+    }
     private void SetupValue()
     {
         MaxWalkSpeed = 7f;
@@ -1049,5 +1084,8 @@ public class PlayerMovement : MonoBehaviour
         GroundedTimerBeforeJump = 0.2f;
         isFalling = false;
         coroutRunning = false;
+        purificationAbility = false;
+        isTainted = false;
+        TaintedTimer = 5;
 }
 }
