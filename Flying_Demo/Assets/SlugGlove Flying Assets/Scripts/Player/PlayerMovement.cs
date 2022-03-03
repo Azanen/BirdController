@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
         Stunned, //on a wall
         Static,
     }
-
+    
     //[HideInInspector]
     public WorldState States;
     private Transform Cam; //reference to our camera
@@ -26,7 +26,6 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody Rigid; //rigidbody 
     private Animator Anim; //animator
     private InputHandle InputHand; //script for handling our inputs
-
     float delta;
 
     [Header("Physics")]
@@ -116,11 +115,16 @@ public class PlayerMovement : MonoBehaviour
     private float tempoSpeed;
     private float tempoFixedSpeed;
     public bool isDashing = false;
+    public float veloY;
+    public bool isFalling;
+    private bool coroutRunning;
+
 
 
     // Start is called before the first frame update
     void Awake()
-    { 
+    {
+
         //static until finished setup
         States = WorldState.Static;
 
@@ -146,6 +150,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()   //inputs and animation
     {
+        veloY = Rigid.velocity.y;
         //cannot function when dead
         if (States == WorldState.Static)
             return;
@@ -192,6 +197,8 @@ public class PlayerMovement : MonoBehaviour
                     return;
                 }
             }
+            isFalling = false;
+
         }
         else if (States == WorldState.InAir)
         {
@@ -205,10 +212,19 @@ public class PlayerMovement : MonoBehaviour
                 return;
             }
 
+            // I can't figure it out, the rotation stop at 90 instead of going to 160
+            if (isFalling) 
+            {
+                Vector3 eulerRotation = transform.rotation.eulerAngles;
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(160, eulerRotation.y, eulerRotation.z), Time.deltaTime*2);
+            }
+
             UpwardDash();
         }
         else if(States == WorldState.Flying)
         {
+            MinimalChangeSpeed();
+
             if (ActionAirTimer > 0) //reduce air timer 
                 return;
 
@@ -241,7 +257,7 @@ public class PlayerMovement : MonoBehaviour
 
             FrontalDash();
             //Fixed speed while in 1 sec dash
-
+            isFalling = false;
         }
 
 // Wing switch controls
@@ -330,9 +346,9 @@ public class PlayerMovement : MonoBehaviour
                 FlyingAdjustmentLerp -= delta * (FlyingAdjustmentSpeed * 0.5f);
 
             //control our character when falling
-            // modified by PB
-            //FallingCtrl(delta, ActSpeed, AirAcceleration, moveDirection); 
-            FlyingCtrl(delta, ActSpeed, _xMov, _zMov);
+            // modified by PB, need feedback
+            FallingCtrl2(delta, ActSpeed, AirAcceleration, moveDirection); 
+            //FlyingCtrl(delta, ActSpeed, _xMov, _zMov);
         }
         else if (States == WorldState.Flying)
         {
@@ -367,17 +383,9 @@ public class PlayerMovement : MonoBehaviour
             if (InputHand.Horizontal == 0 && transform.rotation.z !=0 )
             {
                 //Debug.Log("Stabilizing");
-                Quaternion TiltReset = new Quaternion( transform.rotation.x, transform.rotation.y, 0, transform.rotation.w);
-
+                //Quaternion TiltReset = new Quaternion( transform.rotation.x, transform.rotation.y, 0, transform.rotation.w);
                 Vector3 eulerRotation = transform.rotation.eulerAngles;
-                //transform.rotation = Quaternion.Euler(eulerRotation.x, eulerRotation.y, 0);
-                //transform.rotation = TiltReset;
-                //we are not turning, lerp to remove tilt
-                //Quaternion.RotateTowards(transform.rotation, TiltReset, 0);
-                //transform.rotation = Quaternion.Lerp(transform.rotation, TiltReset, Time.deltaTime * 1);
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(eulerRotation.x, eulerRotation.y, 0), Time.deltaTime * 1);
-                //transform.localRotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0), Time.deltaTime * 1);
-                //transform.Rotate(Vector3.forward, 1*Time.deltaTime);
             }
 
 
@@ -506,6 +514,10 @@ public class PlayerMovement : MonoBehaviour
         //turn off gravity
         Rigid.useGravity = true;
 
+        if (!coroutRunning)
+        {
+            StartCoroutine(TetePremiere());
+        }
     }
     //for when we start to fly
     void SetFlying()
@@ -746,6 +758,18 @@ public class PlayerMovement : MonoBehaviour
         dir.y = Rigid.velocity.y;
         Rigid.velocity = dir;
     }
+    void FallingCtrl2(float d, float Speed, float Accel, Vector3 moveDirection)
+    {
+        //Best value of control for now
+
+         //move character
+         float Spd = Speed;
+         Vector3 curVelocity = Rigid.velocity;
+
+         Vector3 targetVelocity = targetDir * Spd;
+         //lerp our acceleration
+         ActAccel = Mathf.Lerp(ActAccel, Accel, HandleReturnSpeed * d);
+    }
 
     void FlyingCtrl(float d, float Speed, float XMove, float ZMove)
     {
@@ -782,7 +806,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 dir = Vector3.Lerp(Rigid.velocity, targetVelocity, d * FlyLerpSpd);
         Rigid.velocity = dir;
     }
-
+    
     Vector3 VehicleFlyingDownwardDirection(float d, float ZMove)
     {
         Vector3 VD = -transform.up;
@@ -978,6 +1002,19 @@ public class PlayerMovement : MonoBehaviour
             ActSpeed = tempoSpeed;
     }
 
+    private void MinimalChangeSpeed()
+    {
+        FlyingMinSpeed = veloY > 0 ? 1 : 5;
+    }
+
+    private IEnumerator TetePremiere()
+    {
+        coroutRunning = true;
+        yield return new WaitForSeconds(1.5f);
+        isFalling = true;
+        coroutRunning = false;
+    }     
+
     private void SetupValue()
     {
         MaxWalkSpeed = 7f;
@@ -1010,5 +1047,7 @@ public class PlayerMovement : MonoBehaviour
         GlideTime = 10f;
         JumpAmt = 30; 
         GroundedTimerBeforeJump = 0.2f;
+        isFalling = false;
+        coroutRunning = false;
 }
 }

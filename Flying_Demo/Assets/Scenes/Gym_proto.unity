@@ -974,7 +974,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 90, y: -30, z: 0}
 --- !u!1 &875947416
 GameObject:
@@ -1291,6 +1291,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 369114206108799331, guid: f629b4aed5aad404886b6d80439071d8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8520448189424423555, guid: f629b4aed5aad404886b6d80439071d8, type: 3}
       propertyPath: m_Name
       value: PonoPrefab#02
@@ -1343,6 +1347,14 @@ PrefabInstance:
       propertyPath: coolSlider
       value: 
       objectReference: {fileID: 940277506}
+    - target: {fileID: 8520448189424423565, guid: f629b4aed5aad404886b6d80439071d8, type: 3}
+      propertyPath: WallDistance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8520448189424423565, guid: f629b4aed5aad404886b6d80439071d8, type: 3}
+      propertyPath: collisionRadius
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8520448189424423566, guid: f629b4aed5aad404886b6d80439071d8, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -1362,7 +1374,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7169461347471187917, guid: 272e18a023a1e9f4ea8a163f54f385d1, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7169461347471187917, guid: 272e18a023a1e9f4ea8a163f54f385d1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1731,7 +1743,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5912342200866825212, guid: 843819ff839ac944299abf886b820f16, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5912342200866825212, guid: 843819ff839ac944299abf886b820f16, type: 3}
       propertyPath: m_TagString
@@ -1747,7 +1759,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5912342201455576787, guid: 843819ff839ac944299abf886b820f16, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5912342201455576787, guid: 843819ff839ac944299abf886b820f16, type: 3}
       propertyPath: m_TagString
