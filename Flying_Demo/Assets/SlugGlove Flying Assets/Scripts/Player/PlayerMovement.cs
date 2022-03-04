@@ -1064,7 +1064,7 @@ public class PlayerMovement : MonoBehaviour
     private void SetupValue()
     {
         MaxWalkSpeed = 7f;
-        MaxFlyingAndWalkingSpeed = 30f;
+        MaxFlyingAndWalkingSpeed = 25f;
         WalkAcceleration = 3f;
         MovementAcceleration = 20f;
         WalkSlowDownAcceleration = 4f;
@@ -1074,17 +1074,17 @@ public class PlayerMovement : MonoBehaviour
         FlyingRotationSpeed = 6f; 
         FlyingUpDownSpeed = 8f; 
         FlyingLeftRightSpeed = 8f;
-        AirAcceleration = 5f;
+        AirAcceleration = 10f; 
         turnSpeedInAir = 2f;
         FallingDirectionSpeed = 0.5f;
         FlyingAcceleration = 3f; 
-        FlyingDecelleration = 0.1f; // was 1f, on the board also 1
-        MaxFlyingSpeed = 30f; //Not sure if this works
+        FlyingDecelleration = 0.3f; // was 1f, on the board also 1, than we tried 0.1f before 0.3f
+        MaxFlyingSpeed = 25f; //was 30f, need to check if it's better together
         FlyingMinSpeed = 5; 
-        FlyingAdjustmentSpeed = 100;
+        FlyingAdjustmentSpeed = 75; // was 100
         FlyingAdjustmentLerp = 0;
         FlyingGravityAmt = 2f; 
-        GlideGravityAmt = 4f; 
+        GlideGravityAmt = 3.5f; // was 4f before
         FlyingGravBuildSpeed = 3f; 
         FlyingAccelerationDownward = 10f; 
         FlyingDeccelerationUpward = 1f; 
