@@ -11,10 +11,14 @@ public class grapple_gun : MonoBehaviour
         public Transform gunTip, camera, player;
         private float maxDistance = 100f;
         private SpringJoint joint;
+        public PlayerCollisionSphere playerRigid;
+        private Rigidbody tempoRigid;
 
         void Awake()
         {
             lr = GetComponent<LineRenderer>();
+        tempoRigid = playerRigid.GetComponent<Rigidbody>();
+        player = this.gameObject.transform;
         }
 
         void Update()
@@ -22,12 +26,15 @@ public class grapple_gun : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 StartGrapple();
+            player.GetComponent<PlayerMovement>().SetGrappling();
             }
             else if (Input.GetMouseButtonUp(0))
             {
                 StopGrapple();
-            }
+            player.GetComponent<PlayerMovement>().SetFlying();
+
         }
+    }
 
         //Called after Update
         void LateUpdate()
@@ -44,7 +51,8 @@ public class grapple_gun : MonoBehaviour
             if (Physics.Raycast(camera.position, camera.forward, out hit, maxDistance, whatIsGrappleable))
             {
                 grapplePoint = hit.point;
-                joint = player.gameObject.AddComponent<SpringJoint>();
+                joint = tempoRigid.gameObject.AddComponent<SpringJoint>();
+            //tempoRigid = player.gameObject.GetComponent<Rigidbody>();
                 joint.autoConfigureConnectedAnchor = false;
                 joint.connectedAnchor = grapplePoint;
 
@@ -72,6 +80,7 @@ public class grapple_gun : MonoBehaviour
         {
             lr.positionCount = 0;
             Destroy(joint);
+        //Destroy(tempoRigid);
         }
 
         private Vector3 currentGrapplePosition;

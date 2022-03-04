@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
         Flying, //trying to fly
         Stunned, //on a wall
         Static,
+        Grappling, 
     }
     
     //[HideInInspector]
@@ -261,6 +262,10 @@ public class PlayerMovement : MonoBehaviour
             FrontalDash();
             //Fixed speed while in 1 sec dash
             isFalling = false;
+        }
+        else if(States == WorldState.Grappling)
+        {
+            //shits to do 
         }
 
 // Wing switch controls
@@ -530,7 +535,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     //for when we start to fly
-    void SetFlying()
+    public void SetFlying()
     {
         CamFol.MouseSpeed = 4;
         CamFol.minAngle = -25;
@@ -571,7 +576,13 @@ public class PlayerMovement : MonoBehaviour
         //turn on gravity
         Rigid.useGravity = true;
     }
-    
+    public void SetGrappling()
+    {
+        States = WorldState.Grappling;
+        //turn on gravity
+        Rigid.useGravity = true;
+    }
+
     #region Fonctions de controles
     void AnimCtrl()
     {
