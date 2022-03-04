@@ -88,33 +88,43 @@ public class PonchoColourChange : MonoBehaviour
     //}
 
     ////////////////////////////////////
-    Renderer renderPoncho;
+    public Renderer renderPoncho;
+    public Renderer renderPonchoCollar;
     public Material[] texturePoncho;
 
     private void Start()
     {
-        renderPoncho = GetComponent<Renderer>();
-        renderPoncho.enabled = true;
+        //renderPoncho = GetComponent<Renderer>();
+        //renderPoncho.enabled = true;
         renderPoncho.sharedMaterial = texturePoncho[0];
+        renderPonchoCollar.sharedMaterial = texturePoncho[0];
+
     }
 
     void Update()
     {
         if (Input.GetKey(KeyCode.P))
         {
-            renderPoncho.sharedMaterial = texturePoncho[1];
-            Debug.Log("Gold");
+            GoldPoncho();
         }
 
-        else 
-            if (Input.GetKey(KeyCode.O))
+        if (Input.GetKey(KeyCode.O))
         {
-            renderPoncho.sharedMaterial = texturePoncho[0];
-            Debug.Log("Shoot, gold is gone");
+            NoMoreGold();
         }
-
     }
-
+    public void GoldPoncho()
+    {
+        renderPoncho.sharedMaterial = texturePoncho[1];
+        renderPonchoCollar.sharedMaterial = texturePoncho[1];
+        Debug.Log("Gold");
+    }
+    public void NoMoreGold()
+    {
+        renderPoncho.sharedMaterial = texturePoncho[0];
+        renderPonchoCollar.sharedMaterial = texturePoncho[0];
+        Debug.Log("Shoot, gold is gone");
+    }
    
 
     ////////////////////////////////////

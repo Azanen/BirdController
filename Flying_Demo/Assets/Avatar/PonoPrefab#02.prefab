@@ -393,6 +393,7 @@ GameObject:
   - component: {fileID: 8520448189424423564}
   - component: {fileID: 8520448189424423565}
   - component: {fileID: 8520448189424423554}
+  - component: {fileID: 1191640154}
   m_Layer: 9
   m_Name: PonoPrefab#02
   m_TagString: Player
@@ -497,7 +498,6 @@ MonoBehaviour:
   GlideTime: 2
   JumpAmt: 50
   GroundedTimerBeforeJump: 0.2
-  JumpForwardAmount: 0
   SpeedLimitBeforeCrash: 18
   StunPushBack: 50
   StunnedTime: 0.25
@@ -505,6 +505,13 @@ MonoBehaviour:
   upwardDashSpeed: 50
   secondStaminaCooldown: 2
   coolSlider: {fileID: 0}
+  dashTime: 1
+  isDashing: 0
+  veloY: 0
+  isFalling: 0
+  purificationAbility: 0
+  RedLineOverStamina: {fileID: 0}
+  TaintedTimer: 0
 --- !u!114 &8520448189424423565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -519,11 +526,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bottomOffset: 0.5
   frontOffset: 0.5
-  collisionRadius: 0.8
+  collisionRadius: 1
   GroundLayer:
     serializedVersion: 2
     m_Bits: 1281
-  WallDistance: 0.65
+  WallDistance: 1
 --- !u!114 &8520448189424423554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,6 +557,23 @@ MonoBehaviour:
   WindAudioMax: 0.75
   WindLerpAmt: 0
   WindLerpSpeed: 0.1
+--- !u!114 &1191640154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8520448189424423555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac2dee67016f7644bb707ab2e612c669, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderPoncho: {fileID: 8276215022174544388}
+  renderPonchoCollar: {fileID: 6823714043366689838}
+  texturePoncho:
+  - {fileID: 2100000, guid: 56fbdd041c516af498a980eede9659d7, type: 2}
+  - {fileID: 2100000, guid: f238bd30375239c4cb9c1e9785a1dafe, type: 2}
 --- !u!1 &8520448189623886524
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,7 +667,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 3893
+    m_Bits: 3901
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -947,6 +971,16 @@ PrefabInstance:
 --- !u!4 &6200150595869058450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6e03a6e130c4e1c4e9007eb12a37e00a, type: 3}
+  m_PrefabInstance: {fileID: 5873227591729463929}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &6823714043366689838 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1095314398126902871, guid: 6e03a6e130c4e1c4e9007eb12a37e00a, type: 3}
+  m_PrefabInstance: {fileID: 5873227591729463929}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &8276215022174544388 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2547595749554249853, guid: 6e03a6e130c4e1c4e9007eb12a37e00a, type: 3}
   m_PrefabInstance: {fileID: 5873227591729463929}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8520448190311630954
@@ -1285,11 +1319,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -6000163319806157104, guid: 7399783acb806ed4b81e6e85b5b721c6, type: 3}
   m_PrefabInstance: {fileID: 8520448190311630954}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &4825313666493626312 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -5420008163957686366, guid: 7399783acb806ed4b81e6e85b5b721c6, type: 3}
-  m_PrefabInstance: {fileID: 8520448190311630954}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2698102602593362963 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3220319501169496967, guid: 7399783acb806ed4b81e6e85b5b721c6, type: 3}
@@ -1303,5 +1332,10 @@ Transform:
 --- !u!4 &3800704230144016886 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4431429744085825124, guid: 7399783acb806ed4b81e6e85b5b721c6, type: 3}
+  m_PrefabInstance: {fileID: 8520448190311630954}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4825313666493626312 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -5420008163957686366, guid: 7399783acb806ed4b81e6e85b5b721c6, type: 3}
   m_PrefabInstance: {fileID: 8520448190311630954}
   m_PrefabAsset: {fileID: 0}
