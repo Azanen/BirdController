@@ -960,8 +960,8 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log("Dashing forward");
             tempoSpeed = ActSpeed;
-            SpeedBoost(frontDashSpeed);
-            tempoFixedSpeed = ActSpeed;
+            //SpeedBoost(frontDashSpeed);
+            //tempoFixedSpeed = ActSpeed;
             canDashFront = false;
             elapsedTime = 0;
             progress = 0;
@@ -999,7 +999,7 @@ public class PlayerMovement : MonoBehaviour
                 //ActSpeed = tempoFixedSpeed;
                 isDashing = true;
                 //Fixed speed
-                ActSpeed = 60;
+                ActSpeed = frontDashSpeed;
             }
             else if (!canDashFront && progressDash>1)
             {
