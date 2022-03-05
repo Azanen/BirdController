@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class MenuPause : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class MenuPause : MonoBehaviour
     public GameObject menuPauseUI;
     public GameObject player;
     public string menuPrincipal;
+
+    public GameObject pauseFirstButton;
 
     void Update()
     {
@@ -39,6 +42,8 @@ public class MenuPause : MonoBehaviour
         menuPauseUI.SetActive(true);
         Time.timeScale = 0f; //met le jeu sur pause
         isPaused = true;
+        EventSystem.current.SetSelectedGameObject(null);    //clear les selection
+        EventSystem.current.SetSelectedGameObject(pauseFirstButton); //cree nouvelle selection (pour manette)
         Cursor.lockState = CursorLockMode.None; //fait reapparaitre le curseur
         player.GetComponent<PlayerMovement>().enabled = false; //fait qu'on ne peut pas "dash" durant le menu
     }
@@ -47,6 +52,7 @@ public class MenuPause : MonoBehaviour
     {
         Debug.Log("loadingMenuPrincipal");
         SceneManager.LoadScene(menuPrincipal);
+        Time.timeScale = 1f; 
     }
 
     public void Quitter()

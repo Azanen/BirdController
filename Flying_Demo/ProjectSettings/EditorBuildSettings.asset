@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Gym_OliRH.unity
+    guid: b132be586c55fa24192f910e3bee855b
+  - enabled: 1
+    path: Assets/Scenes/MenuPrincipal.unity
+    guid: b5948d44d0e03cc4c8f726d73f120de9
   m_configObjects: {}
