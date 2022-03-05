@@ -123,6 +123,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isTainted;
     public GameObject RedLineOverStamina;
     public float TaintedTimer;
+    private grapple_gun grappleGunz;
 
 
     // Start is called before the first frame update
@@ -149,7 +150,8 @@ public class PlayerMovement : MonoBehaviour
 
         //Philippe 
         wingON = false;
-        wingSwitchCooldown = true; 
+        wingSwitchCooldown = true;
+        grappleGunz = this.GetComponent<grapple_gun>();
     }
 
     private void Update()   //inputs and animation
@@ -265,7 +267,9 @@ public class PlayerMovement : MonoBehaviour
         }
         else if(States == WorldState.Grappling)
         {
-            //shits to do 
+             Vector3 testingForward = (this.transform.position - grappleGunz.magneticBall.transform.position);
+            //Forward = opposé de magnetic
+            this.transform.forward = new Vector3 (testingForward.x, testingForward.y, testingForward.z);
         }
 
 // Wing switch controls
@@ -464,6 +468,10 @@ public class PlayerMovement : MonoBehaviour
             //falling audio
             Visuals.WindAudioSetting(delta, Rigid.velocity.magnitude);
         }
+        else if (States == WorldState.Grappling)
+        {
+            
+        }
 
 
         //Update
@@ -580,7 +588,7 @@ public class PlayerMovement : MonoBehaviour
     {
         States = WorldState.Grappling;
         //turn on gravity
-        Rigid.useGravity = true;
+        Rigid.useGravity = false;
     }
 
     #region Fonctions de controles

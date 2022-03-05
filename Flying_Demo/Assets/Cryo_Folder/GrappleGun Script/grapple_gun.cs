@@ -13,6 +13,7 @@ public class grapple_gun : MonoBehaviour
         private SpringJoint joint;
         public PlayerCollisionSphere playerRigid;
         private Rigidbody tempoRigid;
+    public GameObject magneticBall;
 
         void Awake()
         {
@@ -23,7 +24,7 @@ public class grapple_gun : MonoBehaviour
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            /*if (Input.GetMouseButtonDown(0))
             {
                 StartGrapple();
             player.GetComponent<PlayerMovement>().SetGrappling();
@@ -33,7 +34,7 @@ public class grapple_gun : MonoBehaviour
                 StopGrapple();
             player.GetComponent<PlayerMovement>().SetFlying();
 
-        }
+        }*/
     }
 
         //Called after Update
@@ -45,40 +46,66 @@ public class grapple_gun : MonoBehaviour
         /// <summary>
         /// Call whenever we want to start a grapple
         /// </summary>
-        void StartGrapple()
+        public void StartGrapple()
         {
-            RaycastHit hit;
-            if (Physics.Raycast(camera.position, camera.forward, out hit, maxDistance, whatIsGrappleable))
-            {
-                grapplePoint = hit.point;
-                joint = tempoRigid.gameObject.AddComponent<SpringJoint>();
+        /*RaycastHit hit;
+        if (Physics.Raycast(camera.position, camera.forward, out hit, maxDistance, whatIsGrappleable))
+        {
+            grapplePoint = hit.point; // doit etre le centre de l'element magnetic
+            joint = tempoRigid.gameObject.AddComponent<SpringJoint>();
+        //tempoRigid = player.gameObject.GetComponent<Rigidbody>();
+            joint.autoConfigureConnectedAnchor = false;
+            joint.connectedAnchor = grapplePoint;
+
+            float distanceFromPoint = Vector3.Distance(player.position, grapplePoint);
+
+            //The distance grapple will try to keep from grapple point. 
+            joint.maxDistance = distanceFromPoint * 0.8f;
+            joint.minDistance = distanceFromPoint * 0.25f;
+
+            //Adjust these values to fit your game.
+            joint.spring = 4.5f;
+            joint.damper = 7f;
+            joint.massScale = 4.5f;
+
+            lr.positionCount = 2;
+            currentGrapplePosition = gunTip.position;
+        }*/
+        if (magneticBall !=null)
+        {
+            player.GetComponent<PlayerMovement>().SetGrappling();
+
+            grapplePoint = magneticBall.transform.position; // doit etre le centre de l'element magnetic
+            joint = tempoRigid.gameObject.AddComponent<SpringJoint>();
             //tempoRigid = player.gameObject.GetComponent<Rigidbody>();
-                joint.autoConfigureConnectedAnchor = false;
-                joint.connectedAnchor = grapplePoint;
+            joint.autoConfigureConnectedAnchor = false;
+            joint.connectedAnchor = grapplePoint;
 
-                float distanceFromPoint = Vector3.Distance(player.position, grapplePoint);
+            float distanceFromPoint = Vector3.Distance(player.position, grapplePoint);
 
-                //The distance grapple will try to keep from grapple point. 
-                joint.maxDistance = distanceFromPoint * 0.8f;
-                joint.minDistance = distanceFromPoint * 0.25f;
+            //The distance grapple will try to keep from grapple point. 
+            joint.maxDistance = distanceFromPoint * 0.8f;
+            joint.minDistance = distanceFromPoint * 0.25f;
 
-                //Adjust these values to fit your game.
-                joint.spring = 4.5f;
-                joint.damper = 7f;
-                joint.massScale = 4.5f;
+            //Adjust these values to fit your game.
+            joint.spring = 4.5f;
+            joint.damper = 7f;
+            joint.massScale = 4.5f;
 
-                lr.positionCount = 2;
-                currentGrapplePosition = gunTip.position;
-            }
+            lr.positionCount = 2;
+            currentGrapplePosition = gunTip.position;
+            StartCoroutine(LacheTuSeul());
         }
+    }
 
 
         /// <summary>
         /// Call whenever we want to stop a grapple
         /// </summary>
-        void StopGrapple()
+        public void StopGrapple()
         {
-            lr.positionCount = 0;
+        player.GetComponent<PlayerMovement>().SetFlying();
+        lr.positionCount = 0;
             Destroy(joint);
         //Destroy(tempoRigid);
         }
@@ -105,5 +132,11 @@ public class grapple_gun : MonoBehaviour
         {
             return grapplePoint;
         }
- 
+
+    IEnumerator LacheTuSeul()
+    {
+        yield return new WaitForSeconds(2);
+        StopGrapple();
+    }
+
 }
