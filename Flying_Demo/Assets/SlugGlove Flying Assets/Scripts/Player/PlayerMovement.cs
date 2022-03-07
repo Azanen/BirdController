@@ -112,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
     public Slider coolSlider;
     private float elapsedTime = 0;
     private float progress = 0;
-    public float dashTime = 1f;
+    public float dashTime = 0.5f;
     private float tempoSpeed;
     private float tempoFixedSpeed;
     public bool isDashing = false;

@@ -9,7 +9,7 @@ public class MenuPause : MonoBehaviour
     public static bool isPaused = false;
     public GameObject menuPauseUI;
     public GameObject player;
-    public string menuPrincipal;
+    public string menuPrincipal = "MenuPrincipal";
 
     public GameObject pauseFirstButton;
 

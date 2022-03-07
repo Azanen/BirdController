@@ -6,10 +6,19 @@ public class InteractionZone : MonoBehaviour
 {
     const float detectionRadius = 0.2f;
     public LayerMask checkPointZone;
-    public Transform CPDetectionPoint; // CP = checkpoint
+    private Transform CPDetectionPoint; // CP = checkpoint
+    private GameObject CPDetectionPointObject; // CP = checkpoint
     public Transform spawnPoint;
     public GameObject crystalToSpawn;
+    public GameObject player;
 
+
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+        CPDetectionPointObject = GameObject.Find("/"+player.name.ToString() + "/Bird_Centre/FloorCheck");
+        CPDetectionPoint = CPDetectionPointObject.transform;
+    }
     private void Update()
     {
         if (DetectCheckPointZone())

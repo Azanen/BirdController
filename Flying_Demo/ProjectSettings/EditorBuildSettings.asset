@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MenuPrincipal.unity
     guid: b5948d44d0e03cc4c8f726d73f120de9
+  - enabled: 1
+    path: Assets/Scenes/Preuve_Techno.unity
+    guid: db2d46d1b0d2d6a41b5a98a649d90be6
   m_configObjects: {}

@@ -9,12 +9,15 @@ public class magnetic : MonoBehaviour
     private grapple_gun grappleScript;
     public PonchoColourChange sturm;
     public bool isInsideMe = false;
+
+    
     private void OnTriggerEnter(Collider other)
     {
         playerRigid = other.GetComponent<PlayerCollisionSphere>();
         playa = playerRigid.PlayerMov;
         grappleScript = playa.gameObject.GetComponent<grapple_gun>();
         grappleScript.magneticBall = this.gameObject.transform.parent.gameObject;
+        //sturm = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<PonchoColourChange>();
         sturm.GoldPoncho();
         isInsideMe = true;
     }

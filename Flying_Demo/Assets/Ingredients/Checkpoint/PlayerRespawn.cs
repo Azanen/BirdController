@@ -6,11 +6,12 @@ public class PlayerRespawn : MonoBehaviour
     private PlayerMovement playMove;
 
     private Vector3 respawnPoint;
-    public GameObject deathZone;
+    private GameObject deathZone;
 
     //Start is called before the first frame update
     void Start()
     {
+        deathZone = GameObject.Find("/DeathZone");
         playMove = GetComponent<PlayerMovement>();
         respawnPoint = transform.position;
 
