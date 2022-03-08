@@ -106,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Dash Metriques")]
     public int frontDashSpeed = 50;
     public int upwardDashSpeed = 50;
-    public int secondStaminaCooldown = 2;
+    public int secondStaminaCooldown = 5;
     private bool canDashFront=true;
     private bool canDashUp=true;
     public Slider coolSlider;
@@ -221,7 +221,7 @@ public class PlayerMovement : MonoBehaviour
             // I can't figure it out, the rotation stop at 90 instead of going to 160
             if (isFalling) 
             {
-                Vector3 eulerRotation = transform.rotation.eulerAngles;
+                //Vector3 eulerRotation = transform.rotation.eulerAngles;
                 //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(160, eulerRotation.y, eulerRotation.z), Time.deltaTime*2);
             }
 
@@ -984,7 +984,8 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Dashing") && canDashUp)
         {
             Debug.Log("Dashing upward");
-            Rigid.velocity = new Vector3(Rigid.velocity.x, 0, Rigid.velocity.z);
+            //Rigid.velocity = new Vector3(Rigid.velocity.x, 0, Rigid.velocity.z);
+            Rigid.velocity = new Vector3(0, 0, 0);
             Rigid.AddForce((Vector3.up * upwardDashSpeed), ForceMode.Impulse);
             canDashUp = false;
             elapsedTime = 0;
@@ -1033,7 +1034,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void MinimalChangeSpeed()
     {
-        FlyingMinSpeed = veloY > 0 ? 1 : 5;
+        FlyingMinSpeed = veloY > -0.9 ? 0 : 5;
     }
 
     private IEnumerator TetePremiere()
@@ -1106,5 +1107,6 @@ public class PlayerMovement : MonoBehaviour
         purificationAbility = false;
         isTainted = false;
         TaintedTimer = 5;
+        secondStaminaCooldown = 5;
 }
 }
